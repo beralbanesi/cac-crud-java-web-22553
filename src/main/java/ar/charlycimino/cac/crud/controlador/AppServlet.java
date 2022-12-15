@@ -25,10 +25,11 @@ public class AppServlet extends HttpServlet {
     private static final String URI_LIST = "WEB-INF/pages/alumnos/listadoAlumnos.jsp";
     private static final String URI_REMOVE = "WEB-INF/pages/alumnos/borrarAlumno.jsp";
     private static final String URI_EDIT = "WEB-INF/pages/alumnos/editarAlumno.jsp";
+    private static final String URI_DETAIL = "WEB-INF/pages/alumnos/detalleAlumno.jsp";
 
     @Override
     public void init() throws ServletException {
-        this.model = new ModeloMySQL();
+        this.model = new ModeloMySQL();//ModeloHC();
     }
 
     @Override
@@ -50,6 +51,11 @@ public class AppServlet extends HttpServlet {
                 req.setAttribute("yaTieneFoto", !alu.getFoto().contains("no-face"));
                 req.getRequestDispatcher(URI_EDIT).forward(req, resp);
                 break;
+            case "detail":
+                Alumno alumnoDetalle = model.getAlumno(id);
+                req.setAttribute("alumnoDetalle", alumnoDetalle);
+                req.getRequestDispatcher(URI_DETAIL).forward(req, resp);
+                break;                
             default:
                 req.setAttribute("listaAlumnos", model.getAlumnos());
                 req.getRequestDispatcher(URI_LIST).forward(req, resp);
